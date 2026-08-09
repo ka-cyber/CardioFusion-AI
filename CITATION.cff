@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "CardioFusion-AI: Robust Multimodal ECG-PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices"
+type: software
+license: MIT
+repository-code: "https://github.com/REPLACE_ME/CardioFusion-AI"
+keywords:
+  - ecg
+  - ppg
+  - multimodal fusion
+  - wearable devices
+  - cardiovascular risk
+  - deep learning
+  - signal processing
+preferred-citation:
+  type: unpublished
+  title: "CardioFusion-AI: Robust Multimodal ECG-PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices"
+  authors:
+    - name: "REPLACE_ME: your name(s) here"
+  notes: >
+    No formal publication exists yet for this project (see README's
+    Citation section). Update this file with real author names and a DOI
+    or preprint link once available.

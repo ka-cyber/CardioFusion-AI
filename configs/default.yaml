@@ -1,0 +1,35 @@
+# Default CardioFusion-AI configuration.
+# Override any subset of these fields with your own YAML and pass
+# --config path/to/your.yaml -- unspecified fields fall back to these values
+# (see utils/config.py:load_config).
+
+data:
+  # Paths to cached, preprocessed window arrays (produced offline via the
+  # preprocessing/ pipeline -- see datasets/README.md for how to generate these
+  # from raw PhysioNet/PulseDB/BIDMC recordings).
+  ecg_signals_path: datasets/cache/ecg_signals.npy
+  ppg_signals_path: datasets/cache/ppg_signals.npy
+  labels_path: datasets/cache/labels.npy
+  window_size: 1000      # samples per window (e.g. 4s @ 250Hz)
+  stride: 500             # 50% overlap between consecutive windows
+
+model:
+  # One of: early | feature_level | attention | late_decision | adaptive_dynamic
+  fusion_type: feature_level
+  embedding_dim: 128
+  num_classes: 2
+
+training:
+  batch_size: 32
+  num_epochs: 50
+  lr: 0.001
+  weight_decay: 0.0001
+  val_fraction: 0.2
+  checkpoint_dir: checkpoints
+
+signal_processing:
+  ecg_fs: 250
+  ppg_fs: 100
+  ecg_bandpass: [0.5, 40.0]
+  ppg_bandpass: [0.5, 8.0]
+  powerline_freq: 50.0    # use 60.0 for US-based recordings

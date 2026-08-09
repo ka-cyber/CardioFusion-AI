@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data & datasets (never commit patient/physiological data)
+datasets/*/
+!datasets/README.md
+datasets/cache/
+
+# Real-data validation: raw signal downloads excluded, but the resulting
+# tables/figures/reports (the actual evidence) ARE tracked -- see each
+# validation folder's own report for the distinction.
+real_data_validation/data/
+real_data_validation/**/data_csv/
+real_data_validation/**/data/
+*.edf
+*.edf.qrs
+*.dat
+*.hea
+!**/RECORDS
+!**/ANNOTATORS
+
+# Model checkpoints & exports
+checkpoints/
+*.pt
+*.pth
+*.onnx
+
+# Logs / experiment tracking
+runs/
+logs/
+wandb/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

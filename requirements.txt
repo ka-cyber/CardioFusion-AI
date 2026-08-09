@@ -1,0 +1,42 @@
+# Pinned versions. Packages marked [tested here] were actually verified to
+# import and run correctly in the sandbox this repo was built and validated
+# in (Python 3.12.3, Aug 2026). Packages marked [untested -- no network]
+# could not be installed in that offline environment; versions are
+# reasonable, current choices but weren't executed against this code.
+# See PRODUCTION_READINESS.md for exactly what that distinction means.
+
+# Core -- [tested here]
+numpy==2.4.4
+scipy==1.17.1
+pandas==3.0.2
+pyyaml==6.0.3
+
+# Deep learning -- [untested -- no network in build environment]
+torch==2.5.1
+torchvision==0.20.1
+
+# Signal processing / dataset I/O -- [untested -- no network]
+wfdb==4.1.2             # PhysioNet-format dataset loading (PTB-XL, MIT-BIH, BIDMC, PulseDB)
+neurokit2==0.2.10        # optional cross-validation for ECG/PPG processing
+
+# Explainability -- [untested -- no network]
+shap==0.46.0
+captum==0.7.0
+
+# Edge AI / deployment
+onnx==1.17.0             # [untested -- no network]
+onnxruntime==1.24.4      # [tested here]
+
+# Evaluation & visualization -- [tested here]
+scikit-learn==1.8.0
+matplotlib==3.10.8
+
+# API serving -- [untested -- no network]
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.10.4
+
+# Testing -- pytest itself untested here (couldn't install), but every test
+# file was still executed via a minimal hand-rolled stand-in runner (see
+# RECONSTRUCTION_NOTES.md) to check the actual assertions pass.
+pytest==8.3.4

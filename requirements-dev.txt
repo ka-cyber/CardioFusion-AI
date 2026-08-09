@@ -1,0 +1,4 @@
+# Development-only tooling -- not needed to run the package, only to work on it.
+ruff==0.8.4
+mypy==1.13.0
+pre-commit==4.0.1

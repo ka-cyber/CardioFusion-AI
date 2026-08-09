@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.github/
+datasets/*/
+real_data_validation/*/data*/
+real_data_validation/bidmc_validation/data_csv/
+checkpoints/
+*.pt
+*.onnx
+.venv/
+venv/
+.ipynb_checkpoints/
