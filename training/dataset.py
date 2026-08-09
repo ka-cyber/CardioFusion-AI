@@ -19,11 +19,12 @@ PhysioNet (https://physionet.org) into `datasets/<name>/` and point
 
 from __future__ import annotations
 
-import os
 import glob
-import numpy as np
+import os
 from dataclasses import dataclass
 from typing import Optional
+
+import numpy as np
 
 try:
     import wfdb

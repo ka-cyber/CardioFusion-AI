@@ -8,7 +8,7 @@ per-signal sub-headers, and 16-bit signed integer data records with
 per-signal physical-unit scaling.
 """
 from __future__ import annotations
-import struct
+
 import numpy as np
 
 

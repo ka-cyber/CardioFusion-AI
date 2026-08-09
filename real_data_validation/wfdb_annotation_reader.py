@@ -21,7 +21,10 @@ Special type codes:
     A=63  (AUX)    next I bytes are an auxiliary text string, padded to even length
 """
 from __future__ import annotations
+
 import struct
+
+import numpy as np
 
 
 def read_wfdb_annotations(path: str) -> list[tuple[int, int]]:
@@ -38,13 +41,15 @@ def read_wfdb_annotations(path: str) -> list[tuple[int, int]]:
         word = struct.unpack_from("<H", data, pos)[0]
         pos += 2
         A = (word >> 10) & 0x3F
-        I = word & 0x3FF
+        interval = word & 0x3FF
 
-        if A == 0 and I == 0:
+        if A == 0 and interval == 0:
             break  # EOF marker
         elif A == 59:  # SKIP
-            hi = struct.unpack_from("<H", data, pos)[0]; pos += 2
-            lo = struct.unpack_from("<H", data, pos)[0]; pos += 2
+            hi = struct.unpack_from("<H", data, pos)[0]
+            pos += 2
+            lo = struct.unpack_from("<H", data, pos)[0]
+            pos += 2
             interval = (hi << 16) | lo
             if interval >= 2 ** 31:  # reinterpret as signed 32-bit
                 interval -= 2 ** 32
@@ -52,10 +57,10 @@ def read_wfdb_annotations(path: str) -> list[tuple[int, int]]:
         elif A in (60, 61, 62):
             pass  # NUM/SUB/CHN -- not needed for beat-location extraction
         elif A == 63:  # AUX
-            length = I
+            length = interval
             pos += length + (length % 2)
         else:
-            time += I
+            time += interval
             anns.append((time, A))
 
     return anns
@@ -63,7 +68,6 @@ def read_wfdb_annotations(path: str) -> list[tuple[int, int]]:
 
 def beat_times_seconds(path: str, fs: float, beat_type: int = 1) -> "np.ndarray":
     """Convenience wrapper: returns reference beat times in seconds for a given type code (default 1 = NORMAL)."""
-    import numpy as np
     anns = read_wfdb_annotations(path)
     times = [t for t, a in anns if a == beat_type]
     return np.array(times) / fs

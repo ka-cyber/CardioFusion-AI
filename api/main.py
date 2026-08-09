@@ -24,7 +24,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from utils.logging_config import configure_logging
-from utils.exceptions import ModelNotLoadedError
 
 configure_logging(level=os.environ.get("LOG_LEVEL", "INFO"))
 log = logging.getLogger(__name__)
@@ -46,8 +45,9 @@ def _try_load_model() -> None:
         return
     try:
         import torch  # local import: torch is a heavy, optional-at-import-time dependency
-        from models.fusion.fusion_models import FeatureLevelFusion
+
         from models.cnn.cnn_models import CNN1D
+        from models.fusion.fusion_models import FeatureLevelFusion
 
         # NOTE: this assumes a FeatureLevelFusion checkpoint with default
         # dims. A real deployment should save/load architecture config
@@ -85,7 +85,7 @@ app = FastAPI(
 
 class PredictRequest(BaseModel):
     ecg_window: list[float] = Field(..., description=f"Preprocessed ECG window, {EXPECTED_WINDOW_SIZE} samples.")
-    ppg_window: list[float] = Field(..., description=f"Preprocessed, time-aligned PPG window, same length.")
+    ppg_window: list[float] = Field(..., description="Preprocessed, time-aligned PPG window, same length.")
 
     class Config:
         json_schema_extra = {

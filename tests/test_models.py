@@ -8,11 +8,15 @@ import pytest
 
 torch = pytest.importorskip("torch")
 
-from models.cnn.cnn_models import CNN1D, CNNLSTM, CNNGRU
-from models.transformer.temporal_transformer import TemporalTransformer
-from models.fusion.fusion_models import (
-    EarlyFusion, FeatureLevelFusion, AttentionFusion, LateDecisionFusion, AdaptiveDynamicFusion,
+from models.cnn.cnn_models import CNN1D, CNNGRU, CNNLSTM  # noqa: E402
+from models.fusion.fusion_models import (  # noqa: E402
+    AdaptiveDynamicFusion,
+    AttentionFusion,
+    EarlyFusion,
+    FeatureLevelFusion,
+    LateDecisionFusion,
 )
+from models.transformer.temporal_transformer import TemporalTransformer  # noqa: E402
 
 BATCH, SEQ_LEN, NUM_CLASSES = 4, 1000, 2
 

@@ -3,9 +3,9 @@
 import numpy as np
 import pytest
 
-from utils.exceptions import InvalidSignalError, CardioFusionError
-from preprocessing.ecg.ecg_preprocessing import preprocess_ecg, ECGProcessingConfig
-from preprocessing.ppg.ppg_preprocessing import preprocess_ppg, PPGProcessingConfig
+from preprocessing.ecg.ecg_preprocessing import ECGProcessingConfig, preprocess_ecg
+from preprocessing.ppg.ppg_preprocessing import PPGProcessingConfig, preprocess_ppg
+from utils.exceptions import CardioFusionError, InvalidSignalError
 
 
 class TestECGInputValidation:

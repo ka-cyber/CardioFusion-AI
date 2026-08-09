@@ -25,14 +25,17 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 
+from evaluation.evaluate import compute_classification_metrics
 from models.cnn.cnn_models import CNN1D
 from models.fusion.fusion_models import (
-    EarlyFusion, FeatureLevelFusion, AttentionFusion, LateDecisionFusion, AdaptiveDynamicFusion,
+    AdaptiveDynamicFusion,
+    AttentionFusion,
+    EarlyFusion,
+    FeatureLevelFusion,
+    LateDecisionFusion,
 )
 from training.dataset import ECGPPGWindowDataset
-from evaluation.evaluate import compute_classification_metrics
 from utils.config import load_config
-
 
 FUSION_REGISTRY = {
     "early": EarlyFusion,

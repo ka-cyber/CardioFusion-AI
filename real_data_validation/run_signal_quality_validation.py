@@ -5,10 +5,12 @@ real direct fetal ECG channel, matching how the source paper actually uses
 this method (per-segment, not on a whole multi-minute recording).
 """
 import sys
+
 sys.path.insert(0, "..")
 
 import pandas as pd
 from edf_reader import read_edf
+
 from preprocessing.ecg.ecg_preprocessing import ECGProcessingConfig, extract_ecg_pipeline
 from preprocessing.signal_quality import assess_segment_quality
 

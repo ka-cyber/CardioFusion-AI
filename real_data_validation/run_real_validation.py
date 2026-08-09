@@ -9,17 +9,19 @@ cannot validate PPG processing, ECG-PPG fusion, or risk classification --
 see REAL_DATA_VALIDATION_REPORT.md for the full scope discussion.
 """
 import sys
+
 sys.path.insert(0, "..")
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
 from edf_reader import read_edf
-from wfdb_annotation_reader import beat_times_seconds
 from peak_matching import match_peaks
+from wfdb_annotation_reader import beat_times_seconds
+
 from preprocessing.ecg.ecg_preprocessing import ECGProcessingConfig, extract_ecg_pipeline
 
 RECORDS = ["r01", "r04", "r07", "r08", "r10"]
@@ -128,7 +130,8 @@ x = np.arange(len(df_abd))
 width = 0.35
 ax.bar(x - width/2, df_abd["reference_fetal_hr_bpm"], width, label="Reference fetal HR", color="green")
 ax.bar(x + width/2, df_abd["detected_hr_bpm"], width, label="Naive abdominal-channel detected HR", color="#c0392b")
-ax.set_xticks(x); ax.set_xticklabels(df_abd.index)
+ax.set_xticks(x)
+ax.set_xticklabels(df_abd.index)
 ax.set_ylabel("Heart rate (bpm)")
 ax.set_title("[REAL DATA] Naive abdominal detection picks up maternal HR, not fetal HR")
 ax.legend(fontsize=8)

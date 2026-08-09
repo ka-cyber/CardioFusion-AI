@@ -8,9 +8,9 @@ outputs. Uses matplotlib only, so it has no heavy/optional dependencies.
 
 from __future__ import annotations
 
-import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, roc_curve, auc
+import numpy as np
+from sklearn.metrics import auc, confusion_matrix, roc_curve
 
 
 def plot_ecg_with_rpeaks(ecg_clean: np.ndarray, r_peaks: np.ndarray, fs: int, ax=None, title="ECG with detected R-peaks"):

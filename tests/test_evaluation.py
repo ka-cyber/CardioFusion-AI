@@ -3,7 +3,9 @@
 import numpy as np
 
 from evaluation.evaluate import (
-    compute_classification_metrics, signal_to_noise_ratio_db, reconstruction_quality,
+    compute_classification_metrics,
+    reconstruction_quality,
+    signal_to_noise_ratio_db,
 )
 
 
@@ -52,5 +54,6 @@ class TestSignalQualityMetrics:
 
 if __name__ == "__main__":
     import sys
+
     import pytest
     sys.exit(pytest.main([__file__, "-v"]))

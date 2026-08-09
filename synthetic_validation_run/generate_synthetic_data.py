@@ -18,13 +18,13 @@ data as evidence about real-world diagnostic accuracy.
 from __future__ import annotations
 
 import sys
+
 sys.path.insert(0, "..")
 
 import numpy as np
 
 from preprocessing.ecg.ecg_preprocessing import ECGProcessingConfig, extract_ecg_pipeline
 from preprocessing.ppg.ppg_preprocessing import PPGProcessingConfig, extract_ppg_pipeline
-
 
 FS_ECG = 250
 FS_PPG = 100

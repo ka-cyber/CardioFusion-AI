@@ -3,22 +3,24 @@ Full SYNTHETIC validation run. Produces figures + tables under
 synthetic_validation_run/{figures,tables}/. All outputs are derived from
 simulated signals -- see generate_synthetic_data.py's module docstring.
 """
-import sys, pickle
+import pickle
+import sys
+
 sys.path.insert(0, "..")
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from evaluation.evaluate import compute_classification_metrics, signal_to_noise_ratio_db
-from visualization.plots import plot_ecg_with_rpeaks, plot_ppg_with_peaks, plot_confusion_matrix, plot_roc_curve
+from evaluation.evaluate import compute_classification_metrics
+from visualization.plots import plot_confusion_matrix, plot_ecg_with_rpeaks, plot_ppg_with_peaks, plot_roc_curve
 
 FIG_DIR = "figures"
 TAB_DIR = "tables"

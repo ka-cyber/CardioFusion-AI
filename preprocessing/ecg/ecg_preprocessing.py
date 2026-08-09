@@ -16,21 +16,20 @@ for cross-validation (see `USE_NEUROKIT2` flag).
 
 from __future__ import annotations
 
+import importlib.util
 import logging
+from dataclasses import dataclass
+from typing import Optional
+
 import numpy as np
 from scipy import signal
-from dataclasses import dataclass, field
-from typing import Optional
 
 from utils.exceptions import InvalidSignalError
 
 log = logging.getLogger(__name__)
 
-try:
-    import neurokit2 as nk  # optional, not required
-    _HAS_NEUROKIT2 = True
-except ImportError:
-    _HAS_NEUROKIT2 = False
+
+_HAS_NEUROKIT2 = importlib.util.find_spec("neurokit2") is not None
 
 
 @dataclass

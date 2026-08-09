@@ -16,23 +16,24 @@ clinical data legitimately has some corrupted/flatline segments -- a
 subject failing shouldn't crash the whole run (this mirrors how a
 production ingestion pipeline should behave).
 """
-import sys
 import glob
 import logging
+import sys
 
 sys.path.insert(0, "../..")
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from evaluation.evaluate import compute_classification_metrics  # noqa: F401 (not used directly, kept for parity)
 from preprocessing.ecg.ecg_preprocessing import ECGProcessingConfig, extract_ecg_pipeline
 from preprocessing.ppg.ppg_preprocessing import PPGProcessingConfig, extract_ppg_pipeline
-from preprocessing.synchronization.sync import synchronize, estimate_ptt_beat_by_beat
 from preprocessing.signal_quality import assess_segment_quality
-from evaluation.evaluate import compute_classification_metrics  # noqa: F401 (not used directly, kept for parity)
+from preprocessing.synchronization.sync import estimate_ptt_beat_by_beat
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("bidmc_validation")
@@ -51,8 +52,8 @@ def load_subject(subject_id: str):
     num.columns = [c.strip() for c in num.columns]
     with open(f"{DATA_DIR}/bidmc_{subject_id}_Fix.txt") as f:
         fix_lines = f.readlines()
-    age_line = next((l for l in fix_lines if l.startswith("Age")), "Age: NaN")
-    gender_line = next((l for l in fix_lines if l.startswith("Gender")), "Gender: NaN")
+    age_line = next((line for line in fix_lines if line.startswith("Age")), "Age: NaN")
+    gender_line = next((line for line in fix_lines if line.startswith("Gender")), "Gender: NaN")
     age = age_line.split(":")[1].strip()
     gender = gender_line.split(":")[1].strip()
     return sig, num, age, gender
@@ -194,7 +195,8 @@ for ax, modality, color in zip(axes, ["ECG", "PPG"], ["#c0392b", "#2980b9"]):
     ax.scatter(sub["reference_bpm"], sub["predicted_bpm"], s=8, alpha=0.4, color=color)
     lims = [30, 140]
     ax.plot(lims, lims, "k--", linewidth=1)
-    ax.set_xlim(lims); ax.set_ylim(lims)
+    ax.set_xlim(lims)
+    ax.set_ylim(lims)
     ax.set_xlabel("Reference monitor (bpm)")
     ax.set_ylabel("This repo's pipeline (bpm)")
     ax.set_title(f"[REAL DATA] {modality}-derived rate vs. monitor, n={len(sub)} windows, 53 subjects")

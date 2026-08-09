@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from preprocessing.signal_quality import check_feasibility_rules, adaptive_template_sqi, assess_segment_quality
+from preprocessing.signal_quality import adaptive_template_sqi, assess_segment_quality, check_feasibility_rules
 
 
 def regular_beats(n=40, interval_samples=200, jitter=2, seed=0):
@@ -82,5 +82,6 @@ class TestAssessSegmentQuality:
 
 if __name__ == "__main__":
     import sys
+
     import pytest
     sys.exit(pytest.main([__file__, "-v"]))

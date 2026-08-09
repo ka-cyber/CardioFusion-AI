@@ -4,13 +4,22 @@ import numpy as np
 import pytest
 
 from preprocessing.ecg.ecg_preprocessing import (
-    ECGProcessingConfig, preprocess_ecg, detect_r_peaks, compute_hrv_features, extract_ecg_pipeline,
+    ECGProcessingConfig,
+    compute_hrv_features,
+    detect_r_peaks,
+    extract_ecg_pipeline,
+    preprocess_ecg,
 )
 from preprocessing.ppg.ppg_preprocessing import (
-    PPGProcessingConfig, preprocess_ppg, detect_systolic_peaks, compute_prv_features, extract_ppg_pipeline,
+    PPGProcessingConfig,
+    extract_ppg_pipeline,
+    preprocess_ppg,
 )
 from preprocessing.synchronization.sync import (
-    synchronize, resample_to_common_rate, estimate_lag_cross_correlation, estimate_ptt_beat_by_beat,
+    estimate_lag_cross_correlation,
+    estimate_ptt_beat_by_beat,
+    resample_to_common_rate,
+    synchronize,
 )
 
 

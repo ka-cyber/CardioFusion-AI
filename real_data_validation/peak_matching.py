@@ -1,5 +1,6 @@
 """Tolerance-based peak matching for evaluating R-peak detection against reference annotations."""
 from __future__ import annotations
+
 import numpy as np
 
 

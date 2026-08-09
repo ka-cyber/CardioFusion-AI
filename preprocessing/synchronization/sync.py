@@ -12,9 +12,10 @@ peak (mechanical pulse arrival) — the Pulse Transit Time (PTT).
 from __future__ import annotations
 
 import logging
-import numpy as np
-from scipy import signal, interpolate
 from dataclasses import dataclass
+
+import numpy as np
+from scipy import interpolate, signal
 
 log = logging.getLogger(__name__)
 
