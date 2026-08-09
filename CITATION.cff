@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 title: "CardioFusion-AI: Robust Multimodal ECG-PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices"
 type: software
 license: MIT
-repository-code: "https://github.com/REPLACE_ME/CardioFusion-AI"
+repository-code: "https://github.com/ka-cyber/CardioFusion-AI"
 keywords:
   - ecg
   - ppg
@@ -12,11 +12,15 @@ keywords:
   - cardiovascular risk
   - deep learning
   - signal processing
+
 preferred-citation:
   type: unpublished
   title: "CardioFusion-AI: Robust Multimodal ECG-PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices"
   authors:
-    - name: " Navaneeth Krishnan K and Janakiraman K"
+    - given-names: "Navaneeth Krishnan"
+      family-names: "K"
+    - given-names: "Janakiraman"
+      family-names: "K"
   notes: >
     No formal publication exists yet for this project (see README's
     Citation section). Update this file with real author names and a DOI

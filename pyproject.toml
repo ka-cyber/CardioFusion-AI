@@ -7,7 +7,7 @@ name = "cardiofusion-ai"
 version = "0.1.0"
 description = "Robust Multimodal ECG-PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 
 [tool.setuptools.packages.find]
@@ -19,7 +19,7 @@ python_files = ["test_*.py"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]  # pyflakes, pycodestyle, isort, warnings
