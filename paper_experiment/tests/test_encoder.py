@@ -11,12 +11,12 @@ import pytest
 
 torch = pytest.importorskip("torch")
 
-import sys
-from pathlib import Path
+import sys # noqa: E402
+from pathlib import Path # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from models.encoder import EMBEDDING_DIM, SharedEncoder, RegressionHead
+from models.encoder import EMBEDDING_DIM, SharedEncoder, RegressionHead # noqa: E402
 
 
 def test_shared_encoder_output_is_64d():
