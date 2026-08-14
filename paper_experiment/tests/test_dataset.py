@@ -11,8 +11,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from data_generation.dataset import (
-    N_TRAIN, N_VAL, N_TEST, N_GRID_CELLS,
-    SEED_RANGE_TRAIN, SEED_RANGE_VAL, SEED_RANGE_TEST,
+    N_GRID_CELLS,
+    N_TEST,
+    N_TRAIN,
+    N_VAL,
+    SEED_RANGE_TEST,
+    SEED_RANGE_TRAIN,
+    SEED_RANGE_VAL,
     describe_split_plan,
 )
 

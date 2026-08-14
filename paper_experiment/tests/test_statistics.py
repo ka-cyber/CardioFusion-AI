@@ -14,8 +14,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analysis.statistics import (
-    paired_comparison, holm_correction, cohens_dz,
-    run_full_statistical_analysis, PRE_REGISTERED_COMPARISONS, METRICS,
+    METRICS,
+    PRE_REGISTERED_COMPARISONS,
+    holm_correction,
+    paired_comparison,
+    run_full_statistical_analysis,
 )
 from analysis.tables import generate_table_iii
 

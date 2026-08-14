@@ -18,11 +18,17 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from data_generation.signal_generation import (
-    DegradationSpec, SEVERITY_CLEAN, SEVERITY_MILD, SEVERITY_MODERATE,
-    SEVERITY_SEVERE, SEVERITY_MISSING, WINDOW_SAMPLES, full_grid,
-    degrade_ecg, degrade_ppg_params,
+    SEVERITY_CLEAN,
+    SEVERITY_MILD,
+    SEVERITY_MISSING,
+    SEVERITY_MODERATE,
+    SEVERITY_SEVERE,
+    WINDOW_SAMPLES,
+    DegradationSpec,
+    degrade_ecg,
+    degrade_ppg_params,
+    full_grid,
 )
-
 
 # --- pure-NumPy tests (executed) -------------------------------------------------
 

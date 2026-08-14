@@ -2,12 +2,18 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from analysis.metrics import mae, per_regime_mae, seed_result_to_row, build_seed_results_table, summarize_table_ii, REGIMES
+from analysis.metrics import (
+    REGIMES,
+    build_seed_results_table,
+    mae,
+    per_regime_mae,
+    seed_result_to_row,
+    summarize_table_ii,
+)
 
 
 def test_mae_basic():

@@ -7,8 +7,11 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analysis.gate_analysis import (
-    per_window_gate_sqi_table, per_seed_correlation, averaged_correlation,
-    gate_correlation_report, GRADED_ONLY_REGIMES,
+    GRADED_ONLY_REGIMES,
+    averaged_correlation,
+    gate_correlation_report,
+    per_seed_correlation,
+    per_window_gate_sqi_table,
 )
 
 

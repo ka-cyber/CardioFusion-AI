@@ -13,8 +13,6 @@ from __future__ import annotations
 import pandas as pd
 
 from .metrics import summarize_table_ii
-from .statistics import PRE_REGISTERED_COMPARISONS
-
 
 ARCHITECTURE_DISPLAY_NAMES = {
     "ecg_only": "ECG-only",

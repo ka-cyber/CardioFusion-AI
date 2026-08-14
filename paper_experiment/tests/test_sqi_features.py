@@ -2,14 +2,13 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]  # CardioFusion-AI/
 PAPER_EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(PAPER_EXPERIMENT_ROOT))
 
-from training.sqi_features import compute_sqi_vector, SQI_FALLBACK_VALUE # noqa: E402
+from training.sqi_features import SQI_FALLBACK_VALUE, compute_sqi_vector  # noqa: E402
 
 
 def _synthetic_ecg_ppg(fs=125, n=1000, seed=0):
