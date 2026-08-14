@@ -352,24 +352,62 @@ Signal Quality
 
 ---
 
-# Public Datasets
+# Datasets
 
-The framework is designed for publicly available physiological datasets.
+## Datasets Used for Real-Data Validation
 
-### ECG
+### 1. Abdominal and Direct Fetal ECG Database
+PhysioNet: https://physionet.org/content/adfecgdb/1.0.0/
 
-- PhysioNet
+Used to validate:
+- ECG preprocessing
+- R-peak detection
+- ECG signal-quality assessment
+- Detection performance against expert fetal ECG annotations
+
+Five real 5-minute recordings were evaluated:
+`r01, r04, r07, r08, r10`.
+
+The direct fetal ECG recordings achieved R-peak detection F1 scores
+of approximately 0.89–0.98 against expert annotations.
+
+> Note: This dataset contains fetal ECG and does not contain PPG or
+> cardiovascular-risk labels. Therefore, it is used only for validating
+> the ECG signal-processing pipeline.
+
+### 2. BIDMC PPG and Respiration Dataset
+PhysioNet: https://physionet.org/content/bidmc/1.0.0/
+
+Used to validate:
+- ECG R-peak detection
+- PPG systolic-peak detection
+- ECG–PPG synchronization
+- Pulse Transit Time (PTT) estimation
+- Signal-quality assessment
+
+The validation used 53 real ICU patients with synchronized ECG,
+PPG, and bedside-monitor reference measurements.
+
+Observed heart-rate/pulse-rate MAE:
+- ECG: 1.61 bpm
+- PPG: 2.78 bpm
+
+> Note: This dataset contains physiological reference measurements but
+> does not provide cardiovascular-risk labels. It is therefore used for
+> signal-processing validation, not cardiovascular-risk classification.
+
+## Reference / Supported Datasets
+
+The framework is designed to support additional publicly available
+physiological datasets, including:
+
 - PTB-XL
 - MIT-BIH Arrhythmia Database
-
-### PPG
-
 - PulseDB
 - MIMIC Waveform Database
-- BIDMC PPG Dataset
 
-Dataset loaders are modular so additional datasets can be integrated with minimal changes.
-
+Dataset loaders are modular so additional datasets can be integrated
+with minimal changes.
 ---
 
 # Research Contributions
