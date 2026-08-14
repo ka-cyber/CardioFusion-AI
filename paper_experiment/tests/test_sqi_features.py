@@ -9,12 +9,11 @@ PAPER_EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(PAPER_EXPERIMENT_ROOT))
 
-from training.sqi_features import compute_sqi_vector, SQI_FALLBACK_VALUE
+from training.sqi_features import compute_sqi_vector, SQI_FALLBACK_VALUE # noqa: E402
 
 
 def _synthetic_ecg_ppg(fs=125, n=1000, seed=0):
     rng = np.random.default_rng(seed)
-    t = np.arange(n) / fs
     ecg = np.zeros(n)
     for beat in np.arange(0.4, 8, 0.8):
         idx = int(beat * fs)
