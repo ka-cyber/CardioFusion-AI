@@ -10,12 +10,12 @@ import pytest
 
 torch = pytest.importorskip("torch")
 
-import sys
-from pathlib import Path
+import sys # noqa: E402
+from pathlib import Path # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from models.fusion_architectures import (
+from models.fusion_architectures import ( # noqa: E402
     ECGOnly, PPGOnly, FixedAverageFusion, FeatureLevelFusion, AttentionFusion,
     GlobalWeightedLateFusion, AdaptiveGateImplicit, AdaptiveGateSQIConditioned,
     SQI_VECTOR_DIM,
