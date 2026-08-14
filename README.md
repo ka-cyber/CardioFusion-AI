@@ -1,5 +1,5 @@
 # CardioFusion-AI
-### Robust Multimodal ECG–PPG Fusion for Early Cardiovascular Risk Detection in Wearable Devices
+### Robust Multimodal ECG–PPG Fusion for Physiological Monitoring Under Signal Degradation
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)]()
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)]()
@@ -78,7 +78,7 @@ exactly how they relate.
 
 ## Overview
 
-CardioFusion-AI is an open-source research framework for intelligent cardiovascular risk assessment using multimodal physiological signals collected from wearable devices.
+CardioFusion-AI is an open-source research framework for multimodal ECG–PPG physiological signal processing, sensor fusion, and cardiovascular monitoring research.
 
 The project combines Electrocardiogram (ECG) and Photoplethysmography (PPG) signals through adaptive multimodal sensor fusion, enabling robust cardiovascular monitoring suitable for next-generation Wearable Body Area Networks (WBANs).
 
@@ -188,6 +188,17 @@ CardioFusion-AI/
 ├── README.md
 │
 └── requirements.txt
+├── paper_experiment/
+│   ├── analysis/
+│   ├── configs/
+│   ├── data_generation/
+│   ├── models/
+│   ├── training/
+│   ├── tests/
+│   └── reproduce_all.py
+│
+├── real_data_validation/
+├── synthetic_validation_run/
 ```
 
 ---
