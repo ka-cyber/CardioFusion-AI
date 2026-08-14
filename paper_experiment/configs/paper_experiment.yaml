@@ -1,0 +1,209 @@
+# =============================================================================
+# paper_experiment/configs/paper_experiment.yaml
+#
+# SINGLE AUTHORITATIVE CONFIGURATION for the manuscript's eight-model
+# ECG-PPG fusion HR-regression degradation study (CardioFusion-AI paper,
+# Sections II-C through II-G, and Table I).
+#
+# Every numeric value in this file is either:
+#   (a) taken directly, verbatim, from the manuscript text, or
+#   (b) marked UNVERIFIED / NOT SPECIFIED, in which case the corresponding
+#       item is also listed in paper_experiment/DISCREPANCIES.md and MUST
+#       NOT be silently assumed by any code that reads this file.
+#
+# Do not duplicate these values elsewhere; all paper_experiment/ code reads
+# from this file (see data_generation/, models/, training/, analysis/).
+# =============================================================================
+
+experiment:
+  name: "cardiofusion_ai_hr_regression_degradation_study"
+  description: >
+    Eight ECG-PPG fusion architectures for heart-rate regression, evaluated
+    across six degradation regimes (18 grid cells) and five independent
+    training seeds. Reproduces Table II, Table III, Figures 2-4 of the
+    manuscript "CardioFusion-AI: Robust ECG-PPG Fusion for Multimodal
+    Physiological Monitoring Under Signal Degradation."
+
+# -----------------------------------------------------------------------
+# Signal generation (manuscript Section II-C)
+# -----------------------------------------------------------------------
+signal:
+  sampling_rate_hz: 125          # manuscript II-C: "sampling rate 125 Hz"
+  window_duration_sec: 8         # manuscript II-C: "each 8 s window"
+  window_samples: 1000           # manuscript II-C: "1000 samples" (8s @ 125Hz)
+  heart_rate_range_bpm: [50, 110]  # manuscript II-C: "HR ~ U(50, 110) bpm"
+  generator: "neurokit2"
+  ecg_generator_fn: "neurokit2.ecg_simulate"   # McSharry dynamical model [8]
+  ppg_generator_fn: "neurokit2.ppg_simulate"   # native motion/drift/burst params
+
+# -----------------------------------------------------------------------
+# Degradation protocol (manuscript Section II-C, Table I)
+# -----------------------------------------------------------------------
+degradation:
+  severity_levels: [0, 1, 2, 3]     # 0=clean, 1=mild, 2=moderate, 3=severe
+  missing_level: 4                  # complete sensor dropout (noise floor, no cardiac structure)
+  level_names: {0: clean, 1: mild, 2: moderate, 3: severe, 4: missing}
+
+  ecg:
+    # manuscript II-C: "ECG degradation combined additive Gaussian noise,
+    # low-frequency baseline wander, and randomly-timed motion bursts, with
+    # severity-scaled amplitudes"
+    components: [additive_gaussian_noise, baseline_wander, motion_bursts]
+    # UNVERIFIED: exact per-level amplitude/frequency values for each
+    # component are NOT stated numerically anywhere in the manuscript or
+    # repository. See DISCREPANCIES.md item D1. Placeholder scaling below
+    # is NOT a manuscript-reported value -- it must not be presented as
+    # reproducing the paper's exact numbers until confirmed.
+    severity_scaling: UNVERIFIED_NOT_IN_MANUSCRIPT
+
+  ppg:
+    # manuscript II-C: "PPG degradation used NeuroKit2's native
+    # motion-amplitude, powerline, drift, and burst-noise parameters, also
+    # severity-scaled"
+    components: [motion_amplitude, powerline_amplitude, drift, burst_amplitude, burst_number]
+    # UNVERIFIED: exact per-level scaling values are NOT stated numerically
+    # in the manuscript. See DISCREPANCIES.md item D1.
+    severity_scaling: UNVERIFIED_NOT_IN_MANUSCRIPT
+    # VERIFIED DISCREPANCY (DISCREPANCIES.md item D2): NeuroKit2's documented
+    # ppg_simulate() API states "powerline_amplitude > 0 is only possible if
+    # sampling_rate is >= 500" (source: NeuroKit2 0.2.13 docs, ppg_simulate).
+    # At this experiment's sampling_rate_hz=125, the documented library
+    # behavior is that powerline_amplitude has NO EFFECT. This is preserved
+    # here as-is (native NeuroKit2 call, no custom substitute injected) per
+    # explicit instruction not to fabricate an implementation.
+    powerline_note: "NeuroKit2 documents powerline_amplitude as inactive below 500 Hz sampling; see DISCREPANCIES.md item D2"
+
+# -----------------------------------------------------------------------
+# Evaluation grid (manuscript Table I)
+# -----------------------------------------------------------------------
+grid:
+  # full factorial of graded co-degradation: levels 0-3 x 0-3 = 16 cells
+  # + 2 targeted complete-modality-loss conditions (ECG missing, PPG missing)
+  # = 18 grid cells, collapsing to 6 analysis regimes.
+  regimes:
+    - {name: "both_clean",     ecg_level: [0],       ppg_level: [0]}
+    - {name: "ecg_degraded",   ecg_level: [1, 2, 3],  ppg_level: [0]}
+    - {name: "ppg_degraded",   ecg_level: [0],        ppg_level: [1, 2, 3]}
+    - {name: "both_degraded",  ecg_level: [1, 2, 3],  ppg_level: [1, 2, 3]}
+    - {name: "ecg_missing",    ecg_level: [4],        ppg_level: [0]}
+    - {name: "ppg_missing",    ecg_level: [0],        ppg_level: [4]}
+  total_grid_cells: 18
+
+# -----------------------------------------------------------------------
+# Dataset sizes (manuscript Section II-C)
+# -----------------------------------------------------------------------
+dataset:
+  # manuscript II-C: "Dataset sizes (792 train / 234 validation / 324 test
+  # window pairs, approximately 44/13/18 windows per grid cell)"
+  n_train: 792
+  n_val: 234
+  n_test: 324
+  approx_windows_per_grid_cell: {train: 44, val: 13, test: 18}
+  independence_mechanism: "disjoint random-number-generator seed ranges per split (Section II-C/F); i.i.d. synthetic draws, no subject identity"
+  # UNVERIFIED: the manuscript does not state the exact seed-range
+  # boundaries used to keep train/val/test disjoint. See DISCREPANCIES.md
+  # item D3. This implementation defines an explicit, documented seed-range
+  # convention (see data_generation/dataset.py) which satisfies the stated
+  # *property* (disjointness) but is not verified against the original
+  # author seed ranges.
+
+# -----------------------------------------------------------------------
+# Shared encoder + regression head (manuscript Section II-E, Fig. 1)
+# -----------------------------------------------------------------------
+model:
+  encoder:
+    architecture: "4-block 1D CNN"
+    kernel_size: 7
+    channels: [16, 32, 64, 64]
+    batch_norm: true
+    activation: relu
+    dropout: 0.2
+    pool: "maxpool after each block"
+    global_pool: "global average pooling"
+    embedding_dim: 64
+  regression_head:
+    architecture: "two-layer MLP"
+    activation: relu
+    dropout: 0.3
+    output_dim: 1
+  attention_fusion:
+    type: "bidirectional multi-head cross-attention"
+    num_heads: 4
+    token_length: 1   # pooled embeddings treated as length-1 token sequences
+    note: "softmax over a single key/value token is necessarily [1]; attention transformation is input-dependent via learned Q/K/V/output projections only, not via a reallocating weight distribution -- manuscript Section II-E(5) / Part 22 of task spec"
+  global_weighted_late_fusion:
+    phi_dim: 2
+    note: "single learned parameter pair shared across all samples, fixed at inference"
+  adaptive_gate_implicit:
+    gate_input: "[e_ecg ; e_ppg]"
+    gate_output_dim: 2
+  adaptive_gate_sqi_conditioned:
+    gate_input: "[e_ecg ; e_ppg ; s]"
+    sqi_vector: "[SQI_ecg, feas_ecg, SQI_ppg, feas_ppg]"
+    gate_output_dim: 2
+
+architectures:
+  - {id: 1, name: "ecg_only"}
+  - {id: 2, name: "ppg_only"}
+  - {id: 3, name: "fixed_average_fusion"}
+  - {id: 4, name: "feature_level_fusion"}
+  - {id: 5, name: "attention_fusion"}
+  - {id: 6, name: "global_weighted_late_fusion"}
+  - {id: 7, name: "adaptive_gate_implicit"}
+  - {id: 8, name: "adaptive_gate_sqi_conditioned"}
+
+# -----------------------------------------------------------------------
+# Signal-quality index (reused from repository; manuscript Section II-D)
+# -----------------------------------------------------------------------
+signal_quality:
+  source_module: "preprocessing.signal_quality"  # repository module, reused unmodified
+  method: "Orphanidou-type: feasibility rules + adaptive-template-correlation SQI"
+  ecg_sqi_threshold: 0.66
+  ppg_sqi_threshold: 0.86
+
+# -----------------------------------------------------------------------
+# Training protocol (manuscript Section II-F)
+# -----------------------------------------------------------------------
+training:
+  optimizer: adam
+  learning_rate: 0.0005      # 5e-4
+  weight_decay: 0.00001      # 1e-5
+  grad_norm_clip: 1.0
+  batch_size: 32
+  loss: mse
+  max_epochs: 30
+  early_stopping_patience: 6
+  early_stopping_metric: "val_mse"
+  seeds: [0, 1, 2, 3, 4]     # governs parameter init + minibatch ordering only
+  split_fixed_across_seeds: true
+
+# -----------------------------------------------------------------------
+# Statistical analysis (manuscript Section II-G, Section III-E)
+# -----------------------------------------------------------------------
+statistics:
+  unit_of_inference: "seed"       # NOT window -- pooling would be pseudo-replication
+  n_seeds: 5
+  pre_registered_comparisons:
+    - {a: "adaptive_gate_sqi_conditioned", b: "adaptive_gate_implicit"}
+    - {a: "adaptive_gate_sqi_conditioned", b: "attention_fusion"}
+    - {a: "adaptive_gate_implicit",        b: "attention_fusion"}
+  metrics: ["overall", "both_clean", "ecg_degraded", "ppg_degraded", "both_degraded", "ecg_missing", "ppg_missing"]
+  total_tests: 21    # 3 comparisons x 7 metrics
+  tests:
+    - "paired difference in per-seed mean MAE (n=5)"
+    - "exact paired Wilcoxon signed-rank test"
+    - "paired t-test"
+    - "paired effect size (Cohen's d_z)"
+    - "t-based 95% confidence interval on the mean difference"
+  multiplicity_correction: "Holm-Bonferroni, applied across the full 21-test family"
+  gate_correlation:
+    unit_of_inference: "seed"   # computed per seed, then averaged; avoids pseudo-replication
+    correlate: "learned gate weight on ECG vs. SQI difference (s_ecg - s_ppg)"
+    variants: ["pooled_all_regimes", "graded_degraded_both_present_only"]
+
+# -----------------------------------------------------------------------
+# Delta sign convention (manuscript Section III-E / Table III, Part 9 of task spec)
+# -----------------------------------------------------------------------
+delta_convention:
+  definition: "Delta = mean per-seed MAE of the FIRST-listed architecture MINUS mean per-seed MAE of the SECOND-listed architecture"
+  example: "'SQI vs. Attn.' Delta = mean_MAE(SQI-conditioned gate) - mean_MAE(attention fusion)"

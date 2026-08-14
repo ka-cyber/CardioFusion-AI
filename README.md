@@ -44,6 +44,38 @@ foundation with a clearly documented, substantial gap in the middle.
 
 ---
 
+## Reproducing the manuscript experiment
+
+The IEEE JBHI manuscript *"CardioFusion-AI: Robust ECG–PPG Fusion for
+Multimodal Physiological Monitoring Under Signal Degradation"* reports two
+separate things, kept explicitly separate here too:
+
+- **The real-data-validated signal-processing front end** (R-peak/systolic
+  detection, Orphanidou-type SQI, PTT estimation) — this is the general
+  framework described above, already validated against real PhysioNet data
+  in `real_data_validation/`.
+- **The eight-model ECG–PPG fusion HR-regression degradation study**
+  (Table II, Table III, Figures 2–4) — a specific, controlled synthetic
+  experiment, distinct from the general classification framework in
+  `models/`, `training/`, and `synthetic_validation_run/` elsewhere in this
+  repo (those use a different architecture, a different task, and a
+  different synthetic-data generator).
+
+The manuscript's eight-model experiment is reproduced in full, as its own
+independent, self-contained package, at:
+
+**[`paper_experiment/README.md`](paper_experiment/README.md)**
+
+including its own config, models, training loop, statistical analysis,
+table/figure generation, tests, and a full discrepancy log
+(`paper_experiment/DISCREPANCIES.md`) documenting every point where the
+manuscript's text underspecifies an exact numeric value. Do not assume the
+general framework described in the rest of this README is identical to
+that specific experiment — see `paper_experiment/README.md` Section 1 for
+exactly how they relate.
+
+---
+
 ## Overview
 
 CardioFusion-AI is an open-source research framework for intelligent cardiovascular risk assessment using multimodal physiological signals collected from wearable devices.
