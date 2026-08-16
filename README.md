@@ -12,35 +12,36 @@
 ## Project Status (read this first)
 
 **Signal processing: validated on real data.** ECG R-peak detection, PPG
-systolic-peak detection, and ECG-PPG synchronization have been run against
-two real, public PhysioNet datasets — see `real_data_validation/` — with
-real accuracy numbers (e.g. R-peak F1 0.89–0.98 vs. expert annotation on
-fetal ECG; ECG/PPG-derived heart rate MAE 1.6/2.8 bpm vs. real bedside
-monitors on 53 ICU patients). One real bug was found and fixed as a direct
-result (a PTT-estimation boundary artifact); see
-`real_data_validation/bidmc_validation/BIDMC_VALIDATION_REPORT.md`.
+systolic-peak detection, signal-quality assessment, and ECG–PPG
+synchronization have been evaluated against two public PhysioNet datasets
+— see `real_data_validation/`. Results include R-peak F1 of 0.89–0.98
+against expert annotation on fetal ECG and ECG/PPG-derived heart-rate MAE
+of 1.61/2.78 bpm against bedside monitor references on 53 ICU patients.
+A boundary-artifact bug in the earlier PTT estimation procedure was also
+identified and fixed as part of this validation.
 
-**Risk classification model: not trained, not validated.** No dataset with
-real cardiovascular-risk labels has been used anywhere in this repo. The
-deep learning fusion architectures in `models/` are implemented and
-unit-tested for correct shapes/gradients, but have never been trained on
-real outcome data. Anything that looks like a classification "result" in
-`synthetic_validation_run/` is explicitly synthetic and labeled as such —
-it demonstrates the pipeline runs, not real-world accuracy.
+**Fusion-architecture study: trained and evaluated.** The eight ECG–PPG
+fusion architectures in `models/` were trained end-to-end for heart-rate
+regression under a controlled, physiologically grounded synthetic
+degradation protocol. The study compares unimodal baselines,
+fixed-average fusion, feature-level fusion, global-weighted late fusion,
+attention fusion, and two adaptive gating strategies across six
+degradation regimes and five independent training seeds.
 
-**Engineering: reasonably solid; not yet a deployed service.** Tests,
-input validation, logging, CI config, a Dockerfile, and an API scaffold
-exist (see `PRODUCTION_READINESS.md` for exactly what was and wasn't
-actually executed while building them, given the offline environment this
-was developed in). None of that substitutes for the missing trained model,
-nor for the clinical validation a real cardiovascular-risk tool would need
-before any real-world use — see `PRODUCTION_READINESS.md` for what that
-would actually require.
+**Scope: physiological monitoring robustness, not cardiovascular-risk
+classification.** The fusion study estimates physiological variables
+under signal degradation; it is not a disease-diagnosis,
+cardiovascular-risk, or clinical-outcome prediction model. No real
+cardiovascular-risk labels or clinical outcome labels are used for the
+fusion study. The real-data experiments validate the signal-processing
+front end, while the comparative fusion-architecture results are based
+on controlled synthetic degradation.
 
-If you're evaluating this repo for a thesis/portfolio/research use: the
-signal-processing layer is genuinely solid and validated. If you're
-evaluating it as a deployable health product: it's a well-structured
-foundation with a clearly documented, substantial gap in the middle.
+**Statistical scope.** The fusion comparison uses five independent
+training seeds. The reported results are descriptive and mechanistic;
+no pairwise comparison among the principal adaptive/attention
+comparisons survives Holm correction. See the paper and the associated
+seed-level results for the full analysis.
 
 ---
 
