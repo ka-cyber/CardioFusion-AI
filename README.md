@@ -140,10 +140,10 @@ CardioFusion-AI investigates whether combining multiple physiological signals ca
         Deep Learning Backbone
                     │
                     ▼
- Cardiovascular Risk Prediction
+        Physiological Estimation
                     │
                     ▼
- Clinical Decision Support Layer
+          Robustness Evaluation
 ```
 
 ---
@@ -228,7 +228,7 @@ Deep Learning Model
 
         ↓
 
-Cardiovascular Risk Prediction
+Physiological Estimation
 
         ↓
 
@@ -236,7 +236,7 @@ Explainable AI
 
         ↓
 
-Clinical Interpretation
+Robustness Evaluation
 ```
 
 ---
@@ -339,15 +339,13 @@ Supported explainability techniques include:
 
 # Evaluation Metrics
 
-Classification
+ Physiological Estimation
 
-- Accuracy
-- Precision
-- Recall
-- F1 Score
-- AUROC
-- Sensitivity
-- Specificity
+- Mean absolute error (MAE)
+- Mean squared error (MSE)
+- Correlation with reference measurements
+- Per-regime degradation performance
+- Missing-modality robustness
 
 Edge Performance
 
